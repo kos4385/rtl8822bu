@@ -1,0 +1,16 @@
+--- os_dep/linux/ioctl_cfg80211.c
++++ os_dep/linux/ioctl_cfg80211.c
+@@ -327,6 +327,13 @@ static const struct ieee80211_txrx_stypes
+ };
+ #endif
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,20,0))
++static inline void get_monotonic_boottime(struct timespec *ts)
++{
++	*ts = ktime_to_timespec(ktime_get_boottime());
++}
++#endif
++
+ static u64 rtw_get_systime_us(void)
+ {
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 39))
